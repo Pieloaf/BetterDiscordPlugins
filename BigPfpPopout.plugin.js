@@ -5,6 +5,7 @@
  * @author Pieloaf
  * @authorId 439364864763363363
  * @website https://pieloaf.github.io
+ * @source https://github.com/Pieloaf/BetterDiscordPlugins/blob/main/BigPfpPopout.plugin.js
  * @updateUrl https://raw.githubusercontent.com/Pieloaf/BetterDiscordPlugins/main/BigPfpPopout.plugin.js
  */
 module.exports = (_ => {
