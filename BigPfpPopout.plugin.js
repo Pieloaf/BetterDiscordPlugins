@@ -1,6 +1,6 @@
 /**
  * @name BigPfpPopout
- * @version 1.0.0
+ * @version 1.0.1
  * @description Displays 256x256 pfp on user popouts
  * @author Pieloaf
  * @authorId 439364864763363363
@@ -24,7 +24,7 @@ module.exports = (_ => {
             {
                 left: 0 !important;
                 top: 0 !important;
-                background-color: var(--background-floating);
+                transition: 0.2s ease-in
             }
 
             /* making the pfp big */
@@ -57,7 +57,7 @@ module.exports = (_ => {
                 left:0;
                 height: 256px !important;
                 width: 256px !important;
-                border-radius: 7px;
+                border-radius: 1px;
             }
 
             /* removing the circle mask form "view profile" overlay */
@@ -81,13 +81,21 @@ module.exports = (_ => {
             .container-q03LZO{
                 margin-bottom: 16px !important;
             }
-
             .banner-2QYc2d{
-                width: 256px !important;
-                z-index: -1;
+                width: 255px !important;
             }
-            .headerTop-2cWpdB{
-                padding-top: 192px
+            .profileBannerPremium-35utuo + .headerTop-2cWpdB{
+                padding-top: 132px;
+                transition: 0.2s ease-in;
+            }
+            .profileBanner-33-uE1 + .headerTop-2cWpdB{
+                padding-top: 192px;
+            }
+            .headerNormal-1l1Znk:hover > .profileBannerPremium-35utuo ~ .headerTop-2cWpdB{
+                padding-top: 252px;
+            }
+            .headerNormal-1l1Znk:hover > .profileBannerPremium-35utuo ~ .avatarWrapper-1-5NA0{
+                top: 120px !important;
             }`;
             document.getElementsByTagName('head')[0].appendChild(profileStyle);
         }
