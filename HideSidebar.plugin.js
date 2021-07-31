@@ -1,6 +1,6 @@
 /**
  * @name HideSideBar
- * @version 1.0.0
+ * @version 1.0.1
  * @description Plugin to hide sidebar in discord
  * @author Pieloaf
  * @authorId 439364864763363363
@@ -18,19 +18,21 @@ module.exports = (_ => {
             btnStyle.id = 'HideSidebarStyles'
             btnStyle.innerHTML = `
             .hide-sidebar-btn {
-                color: #8e9297; 
+                color: var(--interactive-normal);
+                background-color: var(--background-primary);
+                transition: background-color .15s ease-out,color .15s ease-out, border-radius .15s ease-out;
                 display: flex; 
                 justify-content: center;
-                background-color: #2f3136;
                 margin: 6px 10px;
                 padding: 5px 3px;
-                border-radius: 7px;
+                border-radius: 15px;
                 font-weight: 500;
             }
             .hide-sidebar-btn:hover{
+                border-radius: 7px;
                 cursor: pointer;
                 color: #fff;
-                background-color: #393c43;
+                background-color: var(--brand-experiment);
             }`;
 
             document.getElementsByTagName('head')[0].appendChild(btnStyle);
