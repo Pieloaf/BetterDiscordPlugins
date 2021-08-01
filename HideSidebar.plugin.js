@@ -1,6 +1,6 @@
 /**
  * @name HideSideBar
- * @version 1.0.1
+ * @version 1.1.0
  * @description Plugin to hide sidebar in discord
  * @author Pieloaf
  * @authorId 439364864763363363
@@ -9,14 +9,15 @@
  * @updateUrl https://raw.githubusercontent.com/Pieloaf/BetterDiscordPlugins/main/HideSidebar.plugin.js
  */
 module.exports = (_ => {
-    return (class {
-        start() {
-            var serverList = document.getElementsByClassName('scroller-1Bvpku none-2Eo-qx scrollerBase-289Jih')[0];
-            var sidebar = document.getElementsByClassName('sidebar-2K8pFh')[0]
-            var sidebarBtn = document.createElement('span');
-            var btnStyle = document.createElement('style');
-            btnStyle.id = 'HideSidebarStyles'
-            btnStyle.innerHTML = `
+
+    function createSelector(className) {
+        return '.' + className.replace(/ /g, '.')
+    }
+
+    const sidebarSelector = createSelector(BdApi.findModuleByProps("hasNotice").sidebar)
+    const guildBarSelector = createSelector(BdApi.findModuleByProps("hasNotice").guilds)
+    const sidebarBtn = document.createElement('span');
+    const btnStyle = `
             .hide-sidebar-btn {
                 color: var(--interactive-normal);
                 background-color: var(--background-primary);
@@ -35,10 +36,26 @@ module.exports = (_ => {
                 background-color: var(--brand-experiment);
             }`;
 
-            document.getElementsByTagName('head')[0].appendChild(btnStyle);
+    return class {
+
+        start() {
+            BdApi.injectCSS('HideSidebarStyles', btnStyle)
+            this.initialise()
+        }
+        stop() {
+            BdApi.clearCSS('HideSidebarStyles')
+            this.cleanup()
+        }
+
+        cleanup() {
+            sidebarBtn.remove()
+        }
+
+        createButton() {
+            const sidebar = document.querySelector(sidebarSelector)
+
             sidebarBtn.innerHTML = '<<<'
             sidebarBtn.classList.add('hide-sidebar-btn')
-            sidebarBtn.id = 'HideSideBarBtn'
             sidebarBtn.addEventListener('click', function () {
                 if (sidebar.style.display === "" || sidebar.style.display === "flex") {
                     sidebar.style.display = "none"
@@ -49,13 +66,32 @@ module.exports = (_ => {
                     sidebarBtn.innerHTML = '<<<'
                 }
             })
+            return sidebarBtn
+        }
+
+        observer(mutationRecord) {
+            const serverList = document.querySelector(guildBarSelector).firstChild.childNodes[1]
+            const serverListSelector = createSelector(serverList.classList.value)
+            if (mutationRecord.type !== 'childList') return;
+            if (!mutationRecord.addedNodes.length) return;
+            for (const node of Array.from(mutationRecord.addedNodes)) {
+                if (node.matches && node.matches(serverListSelector)) {
+                    this.initialise(node);
+                    return;
+                } else if (node.querySelector) {
+                    const child = node.querySelector(serverListSelector);
+                    if (child) {
+                        this.initialise(child);
+                        return;
+                    }
+                }
+            }
+        }
+
+        initialise(serverListNode) {
+            this.createButton()
+            let serverList = serverListNode || document.querySelector(guildBarSelector).firstChild.childNodes[1]
             serverList.insertBefore(sidebarBtn, serverList.firstElementChild.nextSibling);
         }
-        stop() {
-            let btn = document.getElementById('HideSideBarBtn')
-            let btnStyle = document.getElementById('HideSidebarStyles')
-            btnStyle.remove()
-            btn.remove()
-        }
-    })
+    }
 })();
