@@ -39,6 +39,26 @@ module.exports = (_ => {
                 color: #fff;
                 background-color: var(--brand-experiment);
             }`;
+    
+    const toggleView = (sidebar) => {
+        if (
+            sidebar.style.display === "" ||
+            sidebar.style.display === "flex"
+        ) {
+            sidebar.style.display = "none";
+            sidebarBtn.innerHTML = ">>>";
+        } else {
+            sidebar.style.display = "flex";
+            sidebarBtn.innerHTML = "<<<";
+        }
+    }
+
+    document.onkeydown = function (evt) {
+        let alt = evt.altKey;
+        let hKey = evt.key.toLowerCase() === "h";
+        if (alt && hKey)
+            toggleView(document.querySelector(sidebarSelector));
+    };
 
     return class {
 
@@ -60,16 +80,7 @@ module.exports = (_ => {
 
             sidebarBtn.innerHTML = '<<<'
             sidebarBtn.classList.add('hide-sidebar-btn')
-            sidebarBtn.addEventListener('click', function () {
-                if (sidebar.style.display === "" || sidebar.style.display === "flex") {
-                    sidebar.style.display = "none"
-                    sidebarBtn.innerHTML = '>>>'
-                }
-                else {
-                    sidebar.style.display = "flex"
-                    sidebarBtn.innerHTML = '<<<'
-                }
-            })
+            sidebarBtn.addEventListener('click', ()=>{toggleView(sidebar)})
             return sidebarBtn
         }
 
