@@ -1,6 +1,6 @@
 /**
  * @name HideSideBar
- * @version 1.1.0
+ * @version 1.1.2
  * @description Plugin to hide sidebar in discord
  * @author Pieloaf
  * @authorId 439364864763363363
@@ -39,6 +39,22 @@ module.exports = ((_) => {
                 background-color: var(--brand-experiment);
             }`;
 
+    const toggleView = (sidebar) => {
+        if (sidebar.style.display === "" || sidebar.style.display === "flex") {
+            sidebar.style.display = "none";
+            sidebarBtn.innerHTML = ">>>";
+        } else {
+            sidebar.style.display = "flex";
+            sidebarBtn.innerHTML = "<<<";
+        }
+    };
+
+    document.onkeydown = function (evt) {
+        let alt = evt.altKey;
+        let hKey = evt.key.toLowerCase() === "h";
+        if (alt && hKey) toggleView(document.querySelector(sidebarSelector));
+    };
+
     return class {
         start() {
             BdApi.injectCSS("HideSidebarStyles", btnStyle);
@@ -58,17 +74,8 @@ module.exports = ((_) => {
 
             sidebarBtn.innerHTML = "<<<";
             sidebarBtn.classList.add("hide-sidebar-btn");
-            sidebarBtn.addEventListener("click", function () {
-                if (
-                    sidebar.style.display === "" ||
-                    sidebar.style.display === "flex"
-                ) {
-                    sidebar.style.display = "none";
-                    sidebarBtn.innerHTML = ">>>";
-                } else {
-                    sidebar.style.display = "flex";
-                    sidebarBtn.innerHTML = "<<<";
-                }
+            sidebarBtn.addEventListener("click", () => {
+                toggleView(sidebar);
             });
             return sidebarBtn;
         }
