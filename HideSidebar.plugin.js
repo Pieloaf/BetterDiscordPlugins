@@ -14,10 +14,10 @@ module.exports = ((_) => {
     }
 
     const sidebarSelector = createSelector(
-        BdApi.findModuleByProps("guilds").sidebar
+        BdApi.findAllModules((m) => m.guilds)[1].sidebar
     );
     const guildBarSelector = createSelector(
-        BdApi.findModuleByProps("guilds").guilds
+        BdApi.findAllModules((m) => m.guilds)[1].guilds
     );
     const sidebarBtn = document.createElement("span");
     const btnStyle = `
