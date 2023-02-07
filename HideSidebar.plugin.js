@@ -1,6 +1,6 @@
 /**
  * @name HideSideBar
- * @version 1.1.2
+ * @version 1.1.3
  * @description Plugin to hide sidebar in discord
  * @author Pieloaf
  * @authorId 439364864763363363
@@ -15,7 +15,8 @@ module.exports = (_ => {
     }
 
     const sidebarSelector = createSelector(
-        BdApi.findAllModules(m => m.sidebar)[1].sidebar
+        //BdApi.findAllModules(m => m.sidebar)[1].sidebar
+        document.querySelectorAll('[class^="sidebar"]')[0].className
     );
     const guildBarSelector = createSelector(
         BdApi.findAllModules(m => m.guilds)[1].guilds
