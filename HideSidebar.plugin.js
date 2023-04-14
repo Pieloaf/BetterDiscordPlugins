@@ -1,6 +1,6 @@
 /**
  * @name HideSideBar
- * @version 1.1.4
+ * @version 1.1.5
  * @description Plugin to hide sidebar in discord
  * @author Pieloaf
  * @authorId 439364864763363363
@@ -16,10 +16,10 @@ module.exports = (_ => {
 
     const sidebarSelector = createSelector(
         //BdApi.findAllModules(m => m.sidebar)[1].sidebar
-        document.querySelectorAll('[class^="sidebar"]')[0].className
+        document.querySelector('[class^="sidebar"]').className
     );
     const guildBarSelector = createSelector(
-        document.querySelectorAll('[aria-label="Servers sidebar"]')[0].className
+        document.querySelector('nav[class*="guilds-"').className
     );
     const sidebarBtn = document.createElement('span');
     const btnStyle = `
